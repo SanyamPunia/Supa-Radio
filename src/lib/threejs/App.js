@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import StarManager from '$lib/threejs/StarManager';
-import Visualizer from '$lib/visualizer';
+import AudioManager from '$lib/AudioManager';
 
 export default class App {
     constructor() {
@@ -9,7 +9,7 @@ export default class App {
 
         this.starManager = new StarManager(this.scene, 1000);
 
-        this.visualizer = new Visualizer();
+        this.audioManager = new AudioManager();
     }
 
     animation(timestamp) {
@@ -28,7 +28,7 @@ export default class App {
 
         // animation enter here
         if (this.songPlaying) {
-            let dataArray = this.visualizer.getFrequencyData();
+            let dataArray = this.audioManager.getFrequencyData();
             this.starManager.moveStars(timeDelta, dataArray);
 
         }
@@ -56,24 +56,28 @@ export default class App {
     }
 
     playSound() {
-        this.visualizer.playSound();
+        this.audioManager.playSound();
         this.songPlaying = true;
     }
 
     muteSound() {
-        this.visualizer.muteSound();
+        this.audioManager.muteSound();
     }
 
     unmuteSound() {
-        this.visualizer.unmuteSound();
+        this.audioManager.unmuteSound();
     }
 
     pauseSound() {
         this.songPlaying = false;
-        this.visualizer.pauseSound();
+        this.audioManager.pauseSound();
+    }
+
+    changeVolume(volume) {
+        this.audioManager.changeVolume(volume)
     }
 
     tempFunction(event) {
-        this.visualizer.tempFunction(event);
+        this.audioManager.tempFunction(event);
     }
 }

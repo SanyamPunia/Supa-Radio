@@ -1,9 +1,9 @@
 import supabase from "$lib/supabase";
 import * as Utility from "$lib/utility";
 
-export default class Visualizer {
+export default class AudioManager {
     constructor() {
-        this.audio = new Audio('1.mp3');
+        this.audio = new Audio('test.m4a');
         this.audio.crossOrigin = "anonymous";
         this.initialized = false;
         this.audioGain = true;
@@ -21,6 +21,7 @@ export default class Visualizer {
             this.analyser.fftSize = 64;
             this.bufferLength = this.analyser.frequencyBinCount;
             this.dataArray = new Uint8Array(this.bufferLength);
+            this.gainNode.gain.value = 0.2;
             this.initialized = true;
         }
 
@@ -37,6 +38,11 @@ export default class Visualizer {
 
     pauseSound() {
         this.audio.pause();
+    }
+
+    changeVolume(volume)
+    {
+        this.gainNode.gain.value = volume/100;
     }
 
     async songUrl(fileUrl) {

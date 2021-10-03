@@ -14,8 +14,9 @@ export default class StarManager {
 
     addStars() {
         for (let i = 0; i < this.maximumStars; i++) {
+            const starRadius = Utility.randomBetween(0.01,0.25);
             const star = new THREE.Mesh(
-                new THREE.SphereBufferGeometry(Utility.randomBetween(0.01,0.25), 24, 24),
+                new THREE.SphereGeometry(starRadius, 24, 24),
                 new THREE.MeshPhongMaterial({ emissive:0xffffff, emissiveIntensity: 0.2, color: Utility.getRandomElement(this.colors, this.colors.length) })
             )
             this.spawnStar(star);

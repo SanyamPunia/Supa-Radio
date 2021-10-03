@@ -2,7 +2,9 @@
 	import { fade } from 'svelte/transition';
 	export let app;
 
-    let files;
+	let files;
+	let volume = 20;
+	let prevVolume = volume;
 
 	let isSongPlaying = false;
 	let isSongMuted = false;
@@ -19,16 +21,26 @@
 
 	const muteAudioClip = () => {
 		isSongMuted = true;
-		app.muteSound();
+		volume = 0;
+		app.changeVolume(volume);
 	};
 
 	const unmuteAudioClip = () => {
 		isSongMuted = false;
-		app.unmuteSound();
+		volume = prevVolume;
+		if (volume == 0) {
+			muteAudioClip();
+		} else {
+			app.changeVolume(volume);
+		}
+	};
+
+	const onVolumeChange = (e) => {
+		prevVolume = volume;
+		app.changeVolume(volume);
 	};
 
 	const temp_function = (event) => {
-		
 		app.tempFunction(event);
 	};
 </script>
@@ -36,8 +48,6 @@
 <div class="bottom-container">
 	<div class="bottom-items">
 		<input on:change={temp_function} type="file" bind:files />
-		<button>CLICK</button>
-		<i class="fas fa-step-backward" on:click={muteAudioClip} />
 		{#if !isSongPlaying}
 			<i in:fade on:click={playAudioClip} class="playButton fas fa-play" />
 		{:else}
@@ -47,10 +57,20 @@
 		<i class="fas fa-step-forward" on:click={temp_function} />
 
 		{#if !isSongMuted}
-			<i id="muteButton" class="fas fa-volume-mute" on:click={muteAudioClip} />
+			<i id="muteButton" class="fas fa-volume-up white" on:click={muteAudioClip} />
 		{:else}
-			<i id="muteButton" class="fas fa-volume-up" on:click={unmuteAudioClip} />
+			<i id="muteButton" class="fas fa-volume-mute red" on:click={unmuteAudioClip} />
 		{/if}
+		<div class="volumeSlider">
+			<input
+				type="range"
+				min="0"
+				max="100"
+				bind:value={volume}
+				class="slider"
+				on:input={onVolumeChange}
+			/>
+		</div>
 	</div>
 </div>
 
@@ -66,6 +86,7 @@
 		margin: 0 auto;
 
 		.bottom-items {
+			display: flex;
 			margin: auto;
 			font-size: 20px;
 			color: white;
@@ -74,9 +95,14 @@
 				margin: 0 1em;
 				cursor: pointer;
 			}
-			#muteButton {
-				color: red;
-			}
 		}
+	}
+
+	.red {
+		color: red;
+	}
+
+	.white {
+		color: white;
 	}
 </style>
