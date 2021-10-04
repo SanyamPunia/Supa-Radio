@@ -27,17 +27,20 @@
 
 	const unmuteAudioClip = () => {
 		isSongMuted = false;
+		if(prevVolume == 0) 
+			prevVolume = 20;
 		volume = prevVolume;
-		if (volume == 0) {
-			muteAudioClip();
-		} else {
-			app.changeVolume(volume);
-		}
+		app.changeVolume(volume);
 	};
 
 	const onVolumeChange = (e) => {
 		prevVolume = volume;
-		app.changeVolume(volume);
+		if (volume == 0) {
+			muteAudioClip();
+		} else {
+			isSongMuted = false;
+			app.changeVolume(volume);
+		}
 	};
 
 	const temp_function = (event) => {
