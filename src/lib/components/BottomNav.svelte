@@ -8,23 +8,26 @@
 
 	let isSongPlaying = false;
 	let isSongMuted = false;
+	let visualizers = ['stars','cubes']
+	let activeVisualizer = visualizers[0];
 
+	
 	const playAudioClip = () => {
 		isSongPlaying = true;
 		app.playSound();
 	};
-
+	
 	const pauseAudioClip = () => {
 		isSongPlaying = false;
 		app.pauseSound();
 	};
-
+	
 	const muteAudioClip = () => {
 		isSongMuted = true;
 		volume = 0;
 		app.changeVolume(volume);
 	};
-
+	
 	const unmuteAudioClip = () => {
 		isSongMuted = false;
 		volume = prevVolume;
@@ -34,15 +37,24 @@
 			app.changeVolume(volume);
 		}
 	};
-
+	
 	const onVolumeChange = (e) => {
 		prevVolume = volume;
 		app.changeVolume(volume);
 	};
-
+	
 	const temp_function = (event) => {
 		app.tempFunction(event);
 	};
+	
+	const changeVisualizer = () => {
+		console.log(activeVisualizer);
+		visualizers.forEach(element => {
+			if(element == activeVisualizer) {
+				app.setActiveVisualizer(activeVisualizer);
+			}
+		});
+	}
 </script>
 
 <div class="bottom-container">
@@ -70,6 +82,13 @@
 				class="slider"
 				on:input={onVolumeChange}
 			/>
+		</div>
+		<div class="selectVisualizer">
+			<select bind:value={activeVisualizer} on:change={changeVisualizer}>
+				{#each visualizers as visualizer}
+					<option>{visualizer}</option>
+				{/each}
+			</select>
 		</div>
 	</div>
 </div>

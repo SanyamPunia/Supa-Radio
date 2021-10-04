@@ -17,7 +17,7 @@ export default class StarManager {
             const starRadius = Utility.randomBetween(0.01,0.25);
             const star = new THREE.Mesh(
                 new THREE.SphereGeometry(starRadius, 24, 24),
-                new THREE.MeshPhongMaterial({ emissive:0xffffff, emissiveIntensity: 0.2, color: Utility.getRandomElement(this.colors, this.colors.length) })
+                new THREE.MeshPhongMaterial({ color: Utility.getRandomElement(this.colors, this.colors.length) })
             )
             this.spawnStar(star);
             this.stars.push(star);
@@ -25,7 +25,7 @@ export default class StarManager {
         }
     }
 
-    moveStars(timeDelta, dataArray) {
+    animate(timeDelta, dataArray) {
         let baseSpeed = 0.001;
         let globalMoveSpeed = dataArray[20] * 0.0001;
         this.stars.forEach((star, index) => {
