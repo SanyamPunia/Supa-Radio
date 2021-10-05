@@ -32,16 +32,23 @@
 	});
 </script>
 
-<form on:submit|preventDefault={addChatInput}>
-	<input
-		name="name"
-		type="text"
-		autocomplete="off"
-		bind:this={inputField}
-		bind:value={newFieldValue}
-	/>
-	<button>submit</button>
-</form>
+<div class="container">
+	<form on:submit|preventDefault={addChatInput}>
+		<div class="form-elements">
+			<input
+				class="form-input"
+				name="name"
+				type="text"
+				autocomplete="off"
+				bind:this={inputField}
+				bind:value={newFieldValue}
+			/>
+			<div class="btn">
+				<button class="form-btn"><i class="fas fa-arrow-right" /></button>
+			</div>
+		</div>
+	</form>
+</div>
 
 {#if $chat}
 	{#each $chat as { name }}
@@ -50,3 +57,49 @@
 {:else}
 	<i class="fas fa-spinner fa-pulse" />
 {/if}
+
+<style lang="scss">
+	p {
+		font-family: 'Montserrat', sans-serif;
+	}
+	.container {
+		form {
+			position: absolute;
+			bottom: 20%;
+			.form-elements {
+				display: flex;
+				input {
+					outline: none;
+					font-size: 24px;
+					border: 3px solid white;
+					border-radius: 10px;
+					padding: 10px 20px 10px 20px;
+					font-size: 18px;
+				}
+				input:focus {
+					transition: 0.2s all ease;
+					border: 3px solid #5c7aea;
+				}
+
+				.btn {
+					button {
+						// margin-left: 0.7em;
+						margin: auto 0.7em;
+						border: none;
+						font-size: 20px;
+						background-color: transparent;
+						color: white;
+						font-size: 35px;
+						i {
+							cursor: pointer;
+						}
+						i:hover {
+							transition: 0.2s all;
+							color: #5c7aea;
+						}
+					}
+				}
+			}
+		}
+	}
+</style>
