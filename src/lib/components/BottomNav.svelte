@@ -45,11 +45,6 @@
 			app.changeVolume(volume);
 		}
 	};
-  
-	const onVolumeChange = (e) => {
-		prevVolume = volume;
-		app.changeVolume(volume);
-	};
 	
 	const temp_function = (event) => {
 		app.tempFunction(event);
