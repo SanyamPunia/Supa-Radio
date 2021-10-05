@@ -27,8 +27,7 @@
 
 	const unmuteAudioClip = () => {
 		isSongMuted = false;
-		if(prevVolume == 0) 
-			prevVolume = 20;
+		if (prevVolume == 0) prevVolume = 20;
 		volume = prevVolume;
 		app.changeVolume(volume);
 	};
@@ -98,6 +97,21 @@
 				margin: 0 1em;
 				cursor: pointer;
 			}
+		}
+
+		.slider {
+			-webkit-appearance: none; /* Override default CSS styles */
+			height: 0.5em;
+			background: #fff; /* Grey background */
+		}
+		.slider::-webkit-slider-thumb {
+			border-radius: 50%;
+			-webkit-appearance: none; /* Override default look */
+			appearance: none;
+			width: 20px; /* Set a specific slider handle width */
+			height: 20px; /* Slider handle height */
+			background: #5c7aea; /* Green background */
+			cursor: pointer; /* Cursor on hover */
 		}
 	}
 

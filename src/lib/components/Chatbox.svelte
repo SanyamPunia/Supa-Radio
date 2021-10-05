@@ -4,6 +4,7 @@
 
 	let inputField;
 	let newFieldValue = '';
+	let chatDisplay;
 
 	async function addChatInput(e) {
 		const chatData = new FormData(e.target);
@@ -12,6 +13,7 @@
 		});
 		console.log(error);
 		inputField.value = '';
+		chatDisplay.scrollTop = chatDisplay.scrollHeight;
 	}
 
 	const chat = readable(null, (set) => {
@@ -34,8 +36,21 @@
 
 <div class="container">
 	<form on:submit|preventDefault={addChatInput}>
+		<div bind:this={chatDisplay} class="chat-display">
+			{#if $chat}
+				{#each $chat as { name }}
+					<div class="chat-content">
+						<p>{name}</p>
+					</div>
+				{/each}
+			{:else}
+				<i class="fas fa-spinner fa-pulse" />
+			{/if}
+		</div>
 		<div class="form-elements">
 			<input
+				required
+				placeholder="Enter Message..."
 				class="form-input"
 				name="name"
 				type="text"
@@ -50,30 +65,40 @@
 	</form>
 </div>
 
-{#if $chat}
-	{#each $chat as { name }}
-		<p>{name}</p>
-	{/each}
-{:else}
-	<i class="fas fa-spinner fa-pulse" />
-{/if}
-
 <style lang="scss">
-	p {
-		font-family: 'Montserrat', sans-serif;
-	}
 	.container {
+		.chat-display {
+			max-height: 30em;
+			overflow: auto;
+		}
 		form {
+			border-radius: 30px;
+			padding: 40px;
+			background-color: rgb(0, 0, 0); /* Fallback color */
+			background-color: rgba(0, 0, 0, 0.3); /* Black w/opacity/see-through */
+			backdrop-filter: blur(5px);
 			position: absolute;
 			bottom: 20%;
+			right: 0;
+			.chat-content {
+				color: white;
+				font-family: 'Montserrat', sans-serif;
+				display: flex;
+
+				p {
+					font-size: 20px;
+					margin: 7px 0;
+				}
+			}
 			.form-elements {
+				padding-top: 20px;
 				display: flex;
 				input {
 					outline: none;
 					font-size: 24px;
 					border: 3px solid white;
 					border-radius: 10px;
-					padding: 10px 20px 10px 20px;
+					padding: 7px 15px 7px 15px;
 					font-size: 18px;
 				}
 				input:focus {
@@ -82,14 +107,13 @@
 				}
 
 				.btn {
+					margin-top: 0.5em;
 					button {
-						// margin-left: 0.7em;
 						margin: auto 0.7em;
 						border: none;
-						font-size: 20px;
 						background-color: transparent;
 						color: white;
-						font-size: 35px;
+						font-size: 25px;
 						i {
 							cursor: pointer;
 						}
