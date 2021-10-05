@@ -4,6 +4,8 @@
 	import App from '$lib/threejs/App';
 	import { onMount } from 'svelte';
 
+	import { user } from "$lib/stores/user";
+	console.log($user);
 	let app;
 
 	onMount(() => {
