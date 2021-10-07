@@ -1,6 +1,10 @@
 <script>
 	import supabase from '$lib/supabase';
 	import { readable, get } from 'svelte/store';
+	import SignInPopup from './SignInPopup.svelte';
+	import { fade } from 'svelte/transition';
+	import { state } from '$lib/stores/stateStore';
+	import SignUpPopup from './SignUpPopup.svelte';
 
 	let inputField;
 	let newFieldValue = '';
@@ -35,50 +39,93 @@
 </script>
 
 <div class="container">
-	<form on:submit|preventDefault={addChatInput}>
-		<div bind:this={chatDisplay} class="chat-display">
-			{#if $chat}
-				{#each $chat as { name }}
-					<div class="chat-content">
-						<p>{name}</p>
-					</div>
-				{/each}
-			{:else}
-				<i class="fas fa-spinner fa-pulse" />
-			{/if}
-		</div>
-		<div class="form-elements">
-			<input
-				required
-				placeholder="Enter Message..."
-				class="form-input"
-				name="name"
-				type="text"
-				autocomplete="off"
-				bind:this={inputField}
-				bind:value={newFieldValue}
-			/>
-			<div class="btn">
-				<button class="form-btn"><i class="fas fa-arrow-right" /></button>
+	<div class="chatForm">
+		{#if $state == "home"}
+			<div bind:this={chatDisplay} class="chat-display">
+				{#if $chat}
+					{#each $chat as { name }}
+						<div class="chat-content">
+							<p>{name}</p>
+						</div>
+					{/each}
+				{:else}
+					<i class="fas fa-spinner fa-pulse" />
+				{/if}
 			</div>
-		</div>
-	</form>
+			<form on:submit|preventDefault={addChatInput}>
+				<div class="form-elements">
+					<input
+						required
+						placeholder="Enter Message..."
+						class="form-input"
+						name="name"
+						type="text"
+						autocomplete="off"
+						bind:this={inputField}
+						bind:value={newFieldValue}
+					/>
+					<div class="btn">
+						<button class="form-btn"><i class="fas fa-arrow-right" /></button>
+					</div>
+				</div>
+			</form>
+			<div class="auth-btn">
+				<button
+					on:click={() => {
+						state.set('sign-in');
+					}}
+					in:fade
+				>
+					Join Chat
+				</button>
+			</div>
+		{:else if $state == 'sign-in'}
+			<SignInPopup />
+		{:else if $state == "sign-up"}
+			<SignUpPopup />
+		{/if}
+	</div>
 </div>
 
 <style lang="scss">
 	.container {
-		.chat-display {
-			max-height: 30em;
-			overflow: auto;
+		.auth-btn {
+			text-align: center;
+			margin: 1em;
+			margin-bottom: 0;
+			button {
+				font-family: 'Montserrat', sans-serif;
+				color: #fff;
+				padding: 0.8em 3em;
+				border: 2px solid #5c7aea;
+				cursor: pointer;
+				border-radius: 4px;
+				font-size: 15px;
+				background: transparent;
+				transition: 0.2s all ease;
+				font-weight: bold;
+			}
+
+			button:hover {
+				background: #5c7aea;
+				color: black;
+			}
 		}
-		form {
+		color: white;
+
+		.chatForm {
+			.chat-display {
+				max-height: 30em;
+				overflow: auto;
+			}
 			border-radius: 30px;
 			padding: 40px;
 			background-color: rgb(0, 0, 0); /* Fallback color */
 			background-color: rgba(0, 0, 0, 0.3); /* Black w/opacity/see-through */
 			backdrop-filter: blur(5px);
 			position: absolute;
-			bottom: 20%;
+			bottom: 50%;
+			transform: translateY(50%);
 			right: 0;
 			.chat-content {
 				color: white;
@@ -90,36 +137,38 @@
 					margin: 7px 0;
 				}
 			}
-			.form-elements {
-				padding-top: 20px;
-				display: flex;
-				input {
-					outline: none;
-					font-size: 24px;
-					border: 3px solid white;
-					border-radius: 10px;
-					padding: 7px 15px 7px 15px;
-					font-size: 18px;
-				}
-				input:focus {
-					transition: 0.2s all ease;
-					border: 3px solid #5c7aea;
-				}
+			form {
+				.form-elements {
+					padding-top: 20px;
+					display: flex;
+					input {
+						outline: none;
+						font-size: 24px;
+						border: 3px solid white;
+						border-radius: 10px;
+						padding: 7px 15px 7px 15px;
+						font-size: 18px;
+					}
+					input:focus {
+						transition: 0.2s all ease;
+						border: 3px solid #5c7aea;
+					}
 
-				.btn {
-					margin-top: 0.5em;
-					button {
-						margin: auto 0.7em;
-						border: none;
-						background-color: transparent;
-						color: white;
-						font-size: 25px;
-						i {
-							cursor: pointer;
-						}
-						i:hover {
-							transition: 0.2s all;
-							color: #5c7aea;
+					.btn {
+						margin-top: 0.5em;
+						button {
+							margin: auto 0.7em;
+							border: none;
+							background-color: transparent;
+							color: white;
+							font-size: 25px;
+							i {
+								cursor: pointer;
+							}
+							i:hover {
+								transition: 0.2s all;
+								color: #5c7aea;
+							}
 						}
 					}
 				}
