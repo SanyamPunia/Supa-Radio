@@ -85,13 +85,6 @@ export default class AudioManager {
         }
 
         this.songUrl(songName);
-        // let blobUrl = URL.createObjectURL(data)
-        // console.log(blobUrl);
-        // this.audio.src = blobUrl;
-        // this.playSound()
-        // console.log(error);
-        // console.log("uploaded");
-
     }
 
     getFrequencyData() {
