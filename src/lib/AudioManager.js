@@ -3,13 +3,13 @@ import * as Utility from "$lib/utility";
 
 export default class AudioManager {
     constructor() {
-        this.audio = new Audio('test.m4a');
+        this.audio = new Audio();
         this.audio.crossOrigin = "anonymous";
         this.initialized = false;
         this.audioGain = true;
     }
 
-    playSound() {
+    playSound(url) {
         if (!this.initialized) {
             this.audioCtx = new AudioContext();
             this.gainNode = this.audioCtx.createGain()
@@ -24,7 +24,7 @@ export default class AudioManager {
             this.gainNode.gain.value = 0.2;
             this.initialized = true;
         }
-
+        this.audio.src = url;
         this.audio.play();
     }
 

@@ -55,8 +55,8 @@ export default class App {
         document.body.appendChild(this.renderer.domElement);
     }
 
-    playSound() {
-        this.audioManager.playSound();
+    playSound(url) {
+        this.audioManager.playSound(url);
         this.songPlaying = true;
     }
 

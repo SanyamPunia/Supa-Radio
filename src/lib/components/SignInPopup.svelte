@@ -1,5 +1,6 @@
 <script>
 	import { state } from '$lib/stores/stateStore';
+	import { userName } from '$lib/stores/stateStore';
 	import supabase from '$lib/supabase';
 	import { fade } from 'svelte/transition';
 
@@ -9,11 +10,18 @@
 			email: formData.get('email'),
 			password: formData.get('password')
 		});
+		if (error) {
+			alert(error.message);
+		} else {
+			state.set('home');
+			let user_name = user.email.split('@')[0];
+			userName.set(user_name);
+			alert('Signed In as: ' + user_name);
+		}
 	}
-
-    function setStateSignUp() {
-        state.set("sign-up")
-    }
+	function setStateSignUp() {
+		state.set('sign-up');
+	}
 </script>
 
 <div class="pop-up" in:fade>
@@ -53,12 +61,12 @@
 				span {
 					color: #5c7aea;
 					font-weight: bold;
-                    cursor: pointer;
-                    transition: 0.2s all ease;
+					cursor: pointer;
+					transition: 0.2s all ease;
 				}
-                span:hover {
-                    color: white;
-                }
+				span:hover {
+					color: white;
+				}
 			}
 			form {
 				display: grid;

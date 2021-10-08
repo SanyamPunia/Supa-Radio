@@ -1,14 +1,22 @@
 <script>
 	import supabase from '$lib/supabase';
 	import { fade } from 'svelte/transition';
-	import { state } from '$lib/stores/stateStore';
+	import { state, userName } from '$lib/stores/stateStore';
 
-	async function signIn(e) {
+	async function signUp(e) {
 		const formData = new FormData(e.target);
-		const { user, session, error } = await supabase.auth.signIn({
+		const { user, session, error } = await supabase.auth.signUp({
 			email: formData.get('email'),
 			password: formData.get('password')
 		});
+		if (error) {
+			alert(error.message);
+		} else {
+			state.set('home');
+			let user_name = user.email.split('@')[0];
+			userName.set(user_name);
+			alert('Signed In as: ' + user_name);
+		}
 	}
 
 	function setStateSignIn() {
@@ -24,7 +32,7 @@
 		}}
 	/>
 	<div class="auth-form">
-		<form on:submit|preventDefault={signIn}>
+		<form on:submit|preventDefault={signUp}>
 			<input name="email" type="email" required autocomplete="off" placeholder="Email..." />
 			<input
 				name="password"
