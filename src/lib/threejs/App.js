@@ -1,15 +1,34 @@
 import * as THREE from 'three';
 import StarManager from '$lib/threejs/StarManager';
 import AudioManager from '$lib/AudioManager';
+import CubeVisualizer from './CubeVisualizer';
 
 export default class App {
     constructor() {
         this.initScene();
         this.songPlaying = false;
+        this.currentVisualizer = null;
 
-        this.starManager = new StarManager(this.scene, 1000);
-
+        this.visualizerType = {
+            STARS: 'stars',
+            CUBES: 'cubes'
+        }
+        this.setActiveVisualizer(this.visualizerType.STARS);
         this.audioManager = new AudioManager();
+    }
+
+    setActiveVisualizer(type) {
+        this.clearScene();
+        this.currentVisualizer = type;
+        switch(this.currentVisualizer)
+        {
+            case this.visualizerType.STARS:
+                this.visualizer = new StarManager(this.scene, 1000);
+                break;
+            case this.visualizerType.CUBES:
+                this.visualizer = new CubeVisualizer(this.scene);
+                break;
+        }
     }
 
     animation(timestamp) {
@@ -27,10 +46,9 @@ export default class App {
         const timeDelta = timestamp - this.lastTimeStamp;
 
         // animation enter here
-        if (this.songPlaying) {
+        if (this.songPlaying && this.visualizer!= null) {
             let dataArray = this.audioManager.getFrequencyData();
-            this.starManager.moveStars(timeDelta, dataArray);
-
+            this.visualizer.animate(timeDelta, dataArray);
         }
 
         this.renderer.render(this.scene, this.camera);
@@ -44,10 +62,6 @@ export default class App {
         this.camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.3, 100);
         this.scene.background = new THREE.Color(0x121212);
 
-        const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
-        dirLight.position.set(0, 0, 200);
-        this.scene.add(dirLight);
-
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.render(this.scene, this.camera);
@@ -55,7 +69,16 @@ export default class App {
         document.body.appendChild(this.renderer.domElement);
     }
 
-    playSound(url) {
+    clearScene() {
+        while(this.scene.children.length > 0){ 
+            this.scene.remove(this.scene.children[0]); 
+        }
+        
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+        this.scene.add(ambientLight);
+    }
+
+    playSound() {
         this.audioManager.playSound(url);
         this.songPlaying = true;
     }
