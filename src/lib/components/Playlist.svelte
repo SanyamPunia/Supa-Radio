@@ -1,7 +1,7 @@
 <script>
 	import supabase from '$lib/supabase';
     import { playlist, songIndex } from "$lib/stores/stateStore";
-import { onMount } from 'svelte';
+    import { onMount } from 'svelte';
 
     export let app;
 
@@ -12,8 +12,6 @@ import { onMount } from 'svelte';
 	async function playlistSong() {
         let tempPlaylist = [];
 		const { data, error } = await supabase.storage.from('music-files').list();
-        console.log(data, error);
-
         data.map(element => {
             tempPlaylist.push(
                 {
@@ -22,7 +20,6 @@ import { onMount } from 'svelte';
                 }
             )
         })
-        console.log(tempPlaylist);
         playlist.set(tempPlaylist);
 	}
 </script>
@@ -41,7 +38,7 @@ import { onMount } from 'svelte';
 		font-family: 'Montserrat';
 		bottom: 50%;
 		transform: translateY(50%);
-		border-radius: 30px;
+        border-radius: 0 30px 30px 0;
 		padding: 40px;
 		background-color: rgb(0, 0, 0); /* Fallback color */
 		background-color: rgba(0, 0, 0, 0.3); /* Black w/opacity/see-through */
@@ -51,6 +48,9 @@ import { onMount } from 'svelte';
         }
         .currentSong {
             color: #5c7aea;
+        }
+        p {
+            font-weight: bold;
         }
 	}
 </style>
