@@ -77,7 +77,7 @@
 	<div class="bottom-items">
 		<div class="nowPlayingContainer">
 			{#if $playlist.length > 0}
-				<span class="green">Now Playing</span>{$playlist[$songIndex].songName}
+				<span class="green">Now Playing</span>{$playlist[$songIndex].songName.split(".")[0]}
 			{/if}
 		</div>
 		<div class="songControls">

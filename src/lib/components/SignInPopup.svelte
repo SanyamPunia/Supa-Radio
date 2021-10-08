@@ -10,13 +10,12 @@
 			email: formData.get('email'),
 			password: formData.get('password')
 		});
+		let user_name = user.email.split('@')[0];
 		if (error) {
 			alert(error.message);
 		} else {
 			state.set('home');
-			let user_name = user.email.split('@')[0];
 			userName.set(user_name);
-			alert('Signed In as: ' + user_name);
 		}
 	}
 	function setStateSignUp() {

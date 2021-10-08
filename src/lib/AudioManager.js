@@ -74,14 +74,10 @@ export default class AudioManager {
             // // .upload(filePath, file)
             .list()
 
-        console.log(data);
-        console.log(error);
-
         let songName = [];
 
         for (let i = 0; i < data.length; i++) {
             songName.push(data[i].name);
-            console.log(songName);
         }
 
         this.songUrl(songName);

@@ -5,6 +5,7 @@
 	import { fade } from 'svelte/transition';
 	import { state, userName } from '$lib/stores/stateStore';
 	import SignUpPopup from './SignUpPopup.svelte';
+	import CurrentProfile from '$lib/components/CurrentProfile.svelte';
 
 	let inputField;
 	let newFieldValue = '';
@@ -40,7 +41,7 @@
 
 <div class="container">
 	<div class="chatForm">
-		{#if $state == "home"}
+		{#if $state == 'home'}
 			<div bind:this={chatDisplay} class="chat-display">
 				{#if $chat}
 					{#each $chat as { name, user }}
@@ -53,39 +54,38 @@
 				{/if}
 			</div>
 			{#if $userName == null}
-			
-			<div class="auth-btn">
-				<button
-					on:click={() => {
-						state.set('sign-in');
-					}}
-					in:fade
-				>
-					Join Chat
-				</button>
-			</div>
-			{:else}
-			<form on:submit|preventDefault={addChatInput}>
-				<div class="form-elements">
-					<input
-						required
-						placeholder="Enter Message..."
-						class="form-input"
-						name="name"
-						type="text"
-						autocomplete="off"
-						bind:this={inputField}
-						bind:value={newFieldValue}
-					/>
-					<div class="btn">
-						<button class="form-btn"><i class="fas fa-arrow-right" /></button>
-					</div>
+				<div class="auth-btn">
+					<button
+						on:click={() => {
+							state.set('sign-in');
+						}}
+						in:fade
+					>
+						Join Chat
+					</button>
 				</div>
-			</form>
+			{:else}
+				<form on:submit|preventDefault={addChatInput}>
+					<div class="form-elements">
+						<input
+							required
+							placeholder="Enter Message..."
+							class="form-input"
+							name="name"
+							type="text"
+							autocomplete="off"
+							bind:this={inputField}
+							bind:value={newFieldValue}
+						/>
+						<div class="btn">
+							<button class="form-btn"><i class="fas fa-arrow-right" /></button>
+						</div>
+					</div>
+				</form>
 			{/if}
 		{:else if $state == 'sign-in'}
 			<SignInPopup />
-		{:else if $state == "sign-up"}
+		{:else if $state == 'sign-up'}
 			<SignUpPopup />
 		{/if}
 	</div>
@@ -122,7 +122,7 @@
 				max-height: 30em;
 				overflow: auto;
 			}
-			border-radius: 30px;
+			border-radius: 30px 0 0 30px;
 			padding: 40px;
 			background-color: rgb(0, 0, 0); /* Fallback color */
 			background-color: rgba(0, 0, 0, 0.3); /* Black w/opacity/see-through */
