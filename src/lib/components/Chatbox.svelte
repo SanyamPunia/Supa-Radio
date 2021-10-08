@@ -3,7 +3,7 @@
 	import { readable, get } from 'svelte/store';
 	import SignInPopup from './SignInPopup.svelte';
 	import { fade } from 'svelte/transition';
-	import { state } from '$lib/stores/stateStore';
+	import { state, userName } from '$lib/stores/stateStore';
 	import SignUpPopup from './SignUpPopup.svelte';
 
 	let inputField;
@@ -13,7 +13,8 @@
 	async function addChatInput(e) {
 		const chatData = new FormData(e.target);
 		const { data: chat, error } = await supabase.from('chat').insert({
-			name: chatData.get('name')
+			name: chatData.get('name'),
+			user: $userName
 		});
 		console.log(error);
 		inputField.value = '';
@@ -25,7 +26,6 @@
 			.from('chat')
 			.select('*')
 			.then(({ error, data }) => set(data));
-
 		//subscription
 		const subscription = supabase
 			.from('chat')
@@ -43,15 +43,28 @@
 		{#if $state == "home"}
 			<div bind:this={chatDisplay} class="chat-display">
 				{#if $chat}
-					{#each $chat as { name }}
+					{#each $chat as { name, user }}
 						<div class="chat-content">
-							<p>{name}</p>
+							<p><span>{user}</span>: {name}</p>
 						</div>
 					{/each}
 				{:else}
 					<i class="fas fa-spinner fa-pulse" />
 				{/if}
 			</div>
+			{#if $userName == null}
+			
+			<div class="auth-btn">
+				<button
+					on:click={() => {
+						state.set('sign-in');
+					}}
+					in:fade
+				>
+					Join Chat
+				</button>
+			</div>
+			{:else}
 			<form on:submit|preventDefault={addChatInput}>
 				<div class="form-elements">
 					<input
@@ -69,16 +82,7 @@
 					</div>
 				</div>
 			</form>
-			<div class="auth-btn">
-				<button
-					on:click={() => {
-						state.set('sign-in');
-					}}
-					in:fade
-				>
-					Join Chat
-				</button>
-			</div>
+			{/if}
 		{:else if $state == 'sign-in'}
 			<SignInPopup />
 		{:else if $state == "sign-up"}
@@ -135,6 +139,10 @@
 				p {
 					font-size: 20px;
 					margin: 7px 0;
+
+					span {
+						color: rgb(151, 236, 117);
+					}
 				}
 			}
 			form {

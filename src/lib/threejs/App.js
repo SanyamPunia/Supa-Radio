@@ -79,7 +79,7 @@ export default class App {
     }
 
     playSound() {
-        this.audioManager.playSound();
+        this.audioManager.playSound(url);
         this.songPlaying = true;
     }
 

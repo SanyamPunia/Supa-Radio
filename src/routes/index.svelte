@@ -1,13 +1,10 @@
 <script>
 	import BottomNav from '$lib/components/BottomNav.svelte';
 	import Chatbox from '$lib/components/Chatbox.svelte';
+	import Playlist from '$lib/components/Playlist.svelte';
 	import App from '$lib/threejs/App';
-	import { state } from "$lib/stores/stateStore"
 	import { onMount } from 'svelte';
 
-	import { user } from "$lib/stores/user";
-import SignInPopup from '$lib/components/SignInPopup.svelte';
-	console.log($user);
 	let app;
 	onMount(() => {
 		window.focus();
@@ -16,6 +13,6 @@ import SignInPopup from '$lib/components/SignInPopup.svelte';
 	});
 </script>
 
-
-<BottomNav {app} />
+<Playlist {app} />
 <Chatbox />
+<BottomNav {app} />
