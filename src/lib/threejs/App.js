@@ -78,9 +78,13 @@ export default class App {
         this.scene.add(ambientLight);
     }
 
-    playSound(url) {
-        this.audioManager.playSound(url);
+    playSound() {
+        this.audioManager.playSound();
         this.songPlaying = true;
+    }
+
+    changeSound(url) {
+        this.audioManager.changeSound(url);
     }
 
     muteSound() {
@@ -100,7 +104,16 @@ export default class App {
         this.audioManager.changeVolume(volume)
     }
 
-    tempFunction(event) {
-        this.audioManager.tempFunction(event);
+    getSongDuration() {
+        return this.audioManager.getSongDuration();
     }
+    
+    getSongCurrentTime() {
+        return this.audioManager.getSongCurrentTime();
+    }
+
+    addProgressEvent(progressBar) {
+        this.audioManager.addProgressEvent(progressBar);
+    }
+
 }

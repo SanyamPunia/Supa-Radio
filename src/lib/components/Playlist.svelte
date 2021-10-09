@@ -1,27 +1,10 @@
 <script>
-	import supabase from '$lib/supabase';
-	import { playlist, songIndex } from '$lib/stores/stateStore';
-	import { onMount } from 'svelte';
+	import { playlist, songIndex, loading } from '$lib/stores/stateStore';
+	import supabase from '$lib/supabase'
 
-	export let app;
 	let isToggle = false;
 	let toggleIcon;
-
-	onMount(() => {
-		playlistSong();
-	});
-
-	async function playlistSong() {
-		let tempPlaylist = [];
-		const { data, error } = await supabase.storage.from('music-files').list();
-		data.map((element) => {
-			tempPlaylist.push({
-				songName: element.name,
-				url: null
-			});
-		});
-		playlist.set(tempPlaylist);
-	}
+	export let app;
 
 	function containerToggle(e) {
 		isToggle = !isToggle;
@@ -65,9 +48,6 @@
 		background-color: rgb(0, 0, 0); /* Fallback color */
 		background-color: rgba(0, 0, 0, 0.3); /* Black w/opacity/see-through */
 		backdrop-filter: blur(5px);
-		* {
-			// margin-bottom: 1em;
-		}
 		.currentSong {
 			color: #5c7aea;
 		}
@@ -77,6 +57,7 @@
 		p {
 			font-weight: bold;
 			margin-bottom: 1em;
+			transition: color 0.3s;
 		}
 	}
 </style>

@@ -1,49 +1,51 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { songIndex, playlist } from '$lib/stores/stateStore';
+	import { songIndex, playlist, loading } from '$lib/stores/stateStore';
 	import supabase from '$lib/supabase';
+	import { onMount } from 'svelte';
 
 	export let app;
 
-	let files;
 	let volume = 20;
 	let prevVolume = volume;
-	let loading = false;
 
 	let isSongPlaying = false;
 	let isSongMuted = false;
-	let visualizers = ['stars','cubes']
+	let visualizers = ['stars', 'cubes'];
 	let activeVisualizer = visualizers[0];
+	let progressBar;
 
-	const playAudioClip = async () => {
-		loading = true;
-		isSongPlaying = true;
+	onMount(async () => {
+		$loading = true;
 		let songUrl;
 		if ($playlist[$songIndex].url == null) {
 			const { data, error } = await supabase.storage
 				.from('music-files')
 				.download($playlist[$songIndex].songName);
-			console.log(data);
 			songUrl = URL.createObjectURL(data);
 			$playlist[$songIndex].url = songUrl;
-		} else {
-			songUrl = $playlist[$songIndex].url;
 		}
-		app.playSound(songUrl);
-		loading = false;
+		app.changeSound(songUrl);
+		app.addProgressEvent(progressBar);
+		$loading = false;
+	});
+
+	const playAudioClip = async () => {
+		isSongPlaying = true;
+		app.playSound();
 	};
-	
+
 	const pauseAudioClip = () => {
 		isSongPlaying = false;
 		app.pauseSound();
 	};
-	
+
 	const muteAudioClip = () => {
 		isSongMuted = true;
 		volume = 0;
 		app.changeVolume(volume);
 	};
-	
+
 	const unmuteAudioClip = () => {
 		isSongMuted = false;
 		if (prevVolume == 0) prevVolume = 20;
@@ -61,48 +63,74 @@
 		}
 	};
 
-	const nextSong = () => {
+	const nextSong = async () => {
 		pauseAudioClip();
+		$loading = true;
 		songIndex.set(($songIndex + 1) % $playlist.length);
+		let songUrl;
+		if ($playlist[$songIndex].url == null) {
+			const { data, error } = await supabase.storage
+				.from('music-files')
+				.download($playlist[$songIndex].songName);
+			songUrl = URL.createObjectURL(data);
+			$playlist[$songIndex].url = songUrl;
+		}
+		app.changeSound(songUrl);
+		$loading = false;
 		playAudioClip();
 	};
 
-	const prevSong = () => {
+	const prevSong = async () => {
+		$loading = true;
 		pauseAudioClip();
 		if ($songIndex == 0) songIndex.set($playlist.length - 1);
 		else songIndex.set($songIndex - 1);
+		let songUrl;
+		if ($playlist[$songIndex].url == null) {
+			const { data, error } = await supabase.storage
+				.from('music-files')
+				.download($playlist[$songIndex].songName);
+			songUrl = URL.createObjectURL(data);
+			$playlist[$songIndex].url = songUrl;
+		} else {
+			songUrl = $playlist[$songIndex].url;
+		}
+		app.changeSound(songUrl);
+		$loading = false;
 		playAudioClip();
 	};
-	
+
 	const changeVisualizer = () => {
 		console.log(activeVisualizer);
-		visualizers.forEach(element => {
-			if(element == activeVisualizer) {
+		visualizers.forEach((element) => {
+			if (element == activeVisualizer) {
 				app.setActiveVisualizer(activeVisualizer);
 			}
 		});
-	}
+	};
 </script>
 
 <div class="bottom-container">
 	<div class="bottom-items">
+		<div bind:this={progressBar} class="progressBar" />
+
 		<div class="nowPlayingContainer">
 			{#if $playlist.length > 0}
-				<span class="green">Now Playing</span>{$playlist[$songIndex].songName.split(".")[0]}
+				<span class="green">Now Playing</span>{$playlist[$songIndex].songName.split('.')[0]}
 			{/if}
 		</div>
 		<div class="songControls">
-			{#if !loading}
-			<i class="fas fa-step-backward" on:click={prevSong} />
-			{#if !isSongPlaying}
-				<i in:fade on:click={playAudioClip} class="playButton fas fa-play" />
-			{:else}
-				<i in:fade on:click={pauseAudioClip} class="pauseButton fas fa-pause" />
-			{/if}
+			{#if !$loading}
+				<i class="fas fa-step-backward" on:click={prevSong} />
+				{#if !isSongPlaying}
+					<i in:fade on:click={playAudioClip} class="playButton fas fa-play" />
+				{:else}
+					<i in:fade on:click={pauseAudioClip} class="pauseButton fas fa-pause" />
+				{/if}
 
-			<i class="fas fa-step-forward" on:click={nextSong} />
+				<i class="fas fa-step-forward" on:click={nextSong} />
 			{:else}
-			<i class="fas fa-spinner fa-pulse"></i>
+				<i class="fas fa-spinner fa-pulse" />
 			{/if}
 		</div>
 
@@ -143,6 +171,7 @@
 		margin: 0 auto;
 
 		.bottom-items {
+			position: relative;
 			display: grid;
 			grid-template-columns: 1fr 1fr 1fr;
 			place-items: center;
@@ -155,7 +184,6 @@
 				cursor: pointer;
 			}
 			.nowPlayingContainer {
-
 				font-family: 'Montserrat';
 				.green {
 					color: rgb(151, 236, 117);
@@ -164,6 +192,15 @@
 
 			.songControls {
 				justify-self: center;
+			}
+
+			.progressBar {
+				background: rgb(151, 236, 117);
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 2px;
+				width: 0;
 			}
 		}
 

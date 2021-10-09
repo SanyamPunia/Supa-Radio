@@ -9,7 +9,12 @@ export default class AudioManager {
         this.audioGain = true;
     }
 
-    playSound(url) {
+    changeSound(url) {
+        
+        this.audio.src = url;
+    }
+
+    playSound() {
         if (!this.initialized) {
             this.audioCtx = new AudioContext();
             this.gainNode = this.audioCtx.createGain()
@@ -24,7 +29,6 @@ export default class AudioManager {
             this.gainNode.gain.value = 0.2;
             this.initialized = true;
         }
-        this.audio.src = url;
         this.audio.play();
     }
 
@@ -45,46 +49,15 @@ export default class AudioManager {
         this.gainNode.gain.value = volume/100;
     }
 
-    async songUrl(fileUrl) {
-        let urlArray = []
-        for (let i = 0; i < fileUrl.length; i++) {
-            const { data, error } = await supabase
-                .storage
-                .from("music-files")
-                .getPublicUrl(fileUrl[i])
-
-            urlArray.push(data)
-        }
-
-        let randomSong = Utility.getRandomElement(urlArray, urlArray.length);
-       
-        this.audio.src = randomSong.publicURL;
-        return urlArray;
-    }
-
-    async tempFunction(event) {
-        const file = event.target.files[0];
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Math.random()}.${fileExt}`;
-        const filePath = `${fileName}`;
-
-        const { data, error } = await supabase
-            .storage
-            .from("music-files")
-            // // .upload(filePath, file)
-            .list()
-
-        let songName = [];
-
-        for (let i = 0; i < data.length; i++) {
-            songName.push(data[i].name);
-        }
-
-        this.songUrl(songName);
-    }
-
     getFrequencyData() {
         this.analyser.getByteFrequencyData(this.dataArray);
         return this.dataArray;
+    }
+
+    addProgressEvent(progressBar) {
+        this.audio.addEventListener("timeupdate", () => {
+            let percent = (this.audio.currentTime/this.audio.duration) * 100;
+            progressBar.style.width = percent + '%';
+        });
     }
 }
