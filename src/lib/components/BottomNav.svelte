@@ -149,13 +149,13 @@
 				on:input={onVolumeChange}
 			/>
 		</div>
-		<div class="selectVisualizer">
-			<select bind:value={activeVisualizer} on:change={changeVisualizer}>
-				{#each visualizers as visualizer}
-					<option>{visualizer}</option>
-				{/each}
-			</select>
-		</div>
+		<!-- <div class="selectVisualizer"> -->
+			<!-- <select bind:value={activeVisualizer} on:change={changeVisualizer}> -->
+				<!-- {#each visualizers as visualizer} -->
+					<!-- <option>{visualizer}</option> -->
+				<!-- {/each} -->
+			<!-- </select> -->
+		<!-- </div> -->
 	</div>
 </div>
 
@@ -169,6 +169,7 @@
 		background-color: rgba(0, 0, 0, 0.1); /* Black w/opacity/see-through */
 		backdrop-filter: blur(5px);
 		margin: 0 auto;
+		max-height: 10vh;
 
 		.bottom-items {
 			position: relative;
@@ -176,7 +177,7 @@
 			grid-template-columns: 1fr 1fr 1fr;
 			place-items: center;
 			width: 100%;
-			font-size: 20px;
+			font-size: 1em;
 			color: white;
 			padding: 1.5em 0;
 			* {
@@ -226,5 +227,13 @@
 
 	.white {
 		color: white;
+	}
+
+	@media screen and (max-width: 1400px) {
+		.bottom-container {
+			.bottom-items {
+				font-size: 0.8em;
+			}
+		}
 	}
 </style>

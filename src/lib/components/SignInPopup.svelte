@@ -10,10 +10,10 @@
 			email: formData.get('email'),
 			password: formData.get('password')
 		});
-		let user_name = user.email.split('@')[0];
 		if (error) {
 			alert(error.message);
 		} else {
+			let user_name = user.email.split('@')[0];
 			state.set('home');
 			userName.set(user_name);
 		}

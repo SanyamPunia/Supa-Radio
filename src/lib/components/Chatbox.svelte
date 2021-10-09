@@ -147,8 +147,10 @@
 		color: white;
 
 		.chatForm {
+			max-width: 20vw;
+			overflow-x: hidden;
 			.chat-display {
-				max-height: 30em;
+				max-height: 40vh;
 				overflow: auto;
 			}
 			border-radius: 30px 0 0 30px;
@@ -166,9 +168,10 @@
 				display: flex;
 
 				p {
-					font-size: 20px;
+					font-size: 1.2em;
 					margin: 7px 0;
-
+					max-width: 100%;
+					overflow-wrap: break-word;
 					span {
 						color: rgb(151, 236, 117);
 					}
@@ -209,6 +212,13 @@
 						}
 					}
 				}
+			}
+		}
+	}
+	@media screen and (max-width: 1400px) {
+		.container {
+			.chatForm {
+				font-size: 0.8em;
 			}
 		}
 	}

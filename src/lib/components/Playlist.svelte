@@ -44,6 +44,7 @@
 		bottom: 50%;
 		transform: translateY(50%);
 		border-radius: 0 30px 30px 0;
+		font-size: 12px;
 		padding: 40px;
 		background-color: rgb(0, 0, 0); /* Fallback color */
 		background-color: rgba(0, 0, 0, 0.3); /* Black w/opacity/see-through */
@@ -55,6 +56,7 @@
 			margin-bottom: 1em;
 		}
 		p {
+			font-size: 1.2em;
 			font-weight: bold;
 			margin-bottom: 1em;
 			transition: color 0.3s;
