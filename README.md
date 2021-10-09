@@ -1,4 +1,6 @@
-# Supabase Music Visualizer
+# Supa-Radio
+
+## Supabase Music Visualizer
 
 A 3D Music visualizer built with supabase with Realtime chat functionality. Relax and Chill 🎵
 
