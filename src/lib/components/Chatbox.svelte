@@ -10,6 +10,7 @@
 	let inputField;
 	let newFieldValue = '';
 	let chatDisplay;
+	let isToggle = false;
 
 	async function addChatInput(e) {
 		const chatData = new FormData(e.target);
@@ -37,61 +38,89 @@
 
 		return () => supabase.removeSubscription(subscription);
 	});
+
+	function containerToggle(e) {
+		isToggle = !isToggle;
+		if (isToggle) e.target.className = 'toggle-container far fa-comment-dots';
+		else e.target.className = 'toggle-container fas fa-dot-circle';
+	}
 </script>
 
 <div class="container">
 	<div class="chatForm">
-		{#if $state == 'home'}
-			<div bind:this={chatDisplay} class="chat-display">
-				{#if $chat}
-					{#each $chat as { name, user }}
-						<div class="chat-content">
-							<p><span>{user}</span>: {name}</p>
-						</div>
-					{/each}
-				{:else}
-					<i class="fas fa-spinner fa-pulse" />
-				{/if}
-			</div>
-			{#if $userName == null}
-				<div class="auth-btn">
-					<button
-						on:click={() => {
-							state.set('sign-in');
-						}}
-						in:fade
-					>
-						Join Chat
-					</button>
+		<div on:click={containerToggle} class="toggle-container ">
+			<i class="far fa-comment-dots" />
+		</div>
+		{#if isToggle == false}
+			{#if $state == 'home'}
+				<div bind:this={chatDisplay} class="chat-display">
+					{#if $chat}
+						{#each $chat as { name, user }}
+							<div class="chat-content">
+								<p><span>{user}</span>: {name}</p>
+							</div>
+						{/each}
+					{:else}
+						<i class="fas fa-spinner fa-pulse" />
+					{/if}
 				</div>
-			{:else}
-				<form on:submit|preventDefault={addChatInput}>
-					<div class="form-elements">
-						<input
-							required
-							placeholder="Enter Message..."
-							class="form-input"
-							name="name"
-							type="text"
-							autocomplete="off"
-							bind:this={inputField}
-							bind:value={newFieldValue}
-						/>
-						<div class="btn">
-							<button class="form-btn"><i class="fas fa-arrow-right" /></button>
-						</div>
+				{#if $userName == null}
+					<div class="auth-btn">
+						<button
+							on:click={() => {
+								state.set('sign-in');
+							}}
+							in:fade
+						>
+							Join Chat
+						</button>
 					</div>
-				</form>
+				{:else}
+					<form on:submit|preventDefault={addChatInput}>
+						<div class="form-elements">
+							<input
+								required
+								placeholder="Enter Message..."
+								class="form-input"
+								name="name"
+								type="text"
+								autocomplete="off"
+								bind:this={inputField}
+								bind:value={newFieldValue}
+							/>
+							<div class="btn">
+								<button class="form-btn"><i class="fas fa-arrow-right" /></button>
+							</div>
+						</div>
+					</form>
+				{/if}
+			{:else if $state == 'sign-in'}
+				<SignInPopup />
+			{:else if $state == 'sign-up'}
+				<SignUpPopup />
 			{/if}
-		{:else if $state == 'sign-in'}
-			<SignInPopup />
-		{:else if $state == 'sign-up'}
-			<SignUpPopup />
 		{/if}
 	</div>
 </div>
 
 <style lang="scss">
+
+	* {
+		// border: 2px solid red;
+	}
+
+	.toggle-container {
+		margin: 0.5em 0;
+		text-align: right;
+		color: white;
+		font-size: 1.5em;
+
+		cursor: pointer;
+		transition: 0.2s all ease;
+		&:hover {
+			color: rgb(151, 236, 117);
+		}
+	}
 	.container {
 		.auth-btn {
 			text-align: center;
