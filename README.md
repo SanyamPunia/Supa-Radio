@@ -20,6 +20,7 @@ Features of the Supabase Music Visualizer include
 1. Fast streaming of music stored on [`Supabase Storage`](https://supabase.io/docs/guides/storage)
 2. Realtime chat using secured authentication with the people who are listening to songs.
 3. Change visualizer settings on the fly.
+4. Playlist of all the songs being played on the website.
 
 ## 💻 Developing
 
