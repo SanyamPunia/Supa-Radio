@@ -11,6 +11,7 @@
 	let newFieldValue = '';
 	let chatDisplay;
 	let isToggle = false;
+	let toggleIcon;
 
 	async function addChatInput(e) {
 		const chatData = new FormData(e.target);
@@ -41,15 +42,15 @@
 
 	function containerToggle(e) {
 		isToggle = !isToggle;
-		if (isToggle) e.target.className = 'toggle-container far fa-comment-dots';
-		else e.target.className = 'toggle-container fas fa-dot-circle';
+		if (isToggle) toggleIcon.className = 'far fa-comment-dots';
+		else toggleIcon.className = 'fas fa-dot-circle';
 	}
 </script>
 
 <div class="container">
 	<div class="chatForm">
-		<div on:click={containerToggle} class="toggle-container ">
-			<i class="far fa-comment-dots" />
+		<div class="toggle-container" on:click={containerToggle} >
+			<i bind:this={toggleIcon} class="fas fa-dot-circle" />
 		</div>
 		{#if isToggle == false}
 			{#if $state == 'home'}
@@ -111,7 +112,6 @@
 
 	.toggle-container {
 		margin: 0.5em 0;
-		text-align: right;
 		color: white;
 		font-size: 1.5em;
 

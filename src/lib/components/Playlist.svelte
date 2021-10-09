@@ -5,6 +5,7 @@
 
 	export let app;
 	let isToggle = false;
+	let toggleIcon;
 
 	onMount(() => {
 		playlistSong();
@@ -24,14 +25,14 @@
 
 	function containerToggle(e) {
 		isToggle = !isToggle;
-		if (isToggle) e.target.className = 'toggle-container fas fa-music';
-		else e.target.className = 'toggle-container fas fa-dot-circle';
+		if (isToggle) toggleIcon.className = 'fas fa-music';
+		else toggleIcon.className = 'fas fa-dot-circle';
 	}
 </script>
 
 <div class="playlist-container">
 	<div on:click={containerToggle} class="toggle-container">
-		<i class="fas fa-music" />
+		<i bind:this={toggleIcon} class="fas fa-dot-circle" />
 	</div>
 	{#if isToggle == false}
 		<h1>Playlist</h1>
