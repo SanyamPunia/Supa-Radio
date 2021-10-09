@@ -3,6 +3,7 @@
 	import Chatbox from '$lib/components/Chatbox.svelte';
 	import CurrentProfile from '$lib/components/CurrentProfile.svelte';
 	import Playlist from '$lib/components/Playlist.svelte';
+	import { playlist } from '$lib/stores/stateStore';
 	import App from '$lib/threejs/App';
 	import { onMount } from 'svelte';
 
@@ -14,7 +15,9 @@
 	});
 </script>
 
-<Playlist {app} />
-<Chatbox />
-<BottomNav {app} />
+{#if $playlist.length > 0}
+	<Chatbox />
+	<Playlist {app} />
+	<BottomNav {app} />
+{/if}
 <CurrentProfile />
