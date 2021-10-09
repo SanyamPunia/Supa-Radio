@@ -1,3 +1,10 @@
+[![Hacktoberfest](https://img.shields.io/static/v1?label=hacktoberfest&message=hackathon&color=90a88b&style=flat-square)](https://hacktoberfest.digitalocean.com/)
+[![Svelte](https://img.shields.io/static/v1?label=svelte&message=js&color=important&style=flat-square)](https://svelte.dev/)
+[![SvelteKit](https://img.shields.io/static/v1?label=svelte&message=kit&color=important&style=flat-square)](https://kit.svelte.dev/)
+[![Supabase](https://img.shields.io/static/v1?label=supabase&message=database&color=red&style=flat-square)](https://supabase.io/)
+[![ThreeJS](https://img.shields.io/static/v1?label=threejs&message=visualizer&color=blue&style=flat-square)](https://threejs.org/)
+[![Firebase](https://img.shields.io/static/v1?label=firebase&message=hosting&color=ff69b4&style=flat-square)](https://firebase.google.com/)
+
 # 🎵 Supa-Radio
 
 ## Supabase Music Visualizer
@@ -13,6 +20,14 @@ A 3D Music visualizer built with supabase with Realtime chat functionality. Rela
 [Sanyam Punia](https://github.com/SanyamPunia) 
 
 [Yash Punia](https://github.com/Yash-Punia)
+
+## 🔌 Tech Stack
+
+  * [Svelte](https://svelte.dev/)
+  * [SvelteKit](https://kit.svelte.dev/)
+  * [ThreeJS](https://threejs.org/)
+  * [Supabase](https://supabase.io/)
+  * [Firebase](https://firebase.google.com/)
 
 ## ➕ Features
 
