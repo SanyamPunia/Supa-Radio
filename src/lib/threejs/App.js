@@ -78,7 +78,7 @@ export default class App {
         this.scene.add(ambientLight);
     }
 
-    playSound() {
+    playSound(url) {
         this.audioManager.playSound(url);
         this.songPlaying = true;
     }
