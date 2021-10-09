@@ -34,7 +34,7 @@
 		cursor: pointer;
 		transition: 0.2s all ease;
 		&:hover {
-			color: rgb(151, 236, 117);
+			color: #97ed75;
 		}
 	}
 	.playlist-container {

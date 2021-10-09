@@ -7,7 +7,8 @@ export default class StarManager {
         this.stars = [];
 
         this.scene = scene;
-
+        this.starHolder = new THREE.Object3D();
+        this.starHolder.position.setY(25);
         this.colors = [0xff0055, 0xff0000, 0xff0022, 0x00aaff, 0xffffff]    
         this.addStars();
     }
@@ -21,32 +22,37 @@ export default class StarManager {
             )
             this.spawnStar(star);
             this.stars.push(star);
-            this.scene.add(star);
+            this.starHolder.add(star);
         }
+        this.scene.add(this.starHolder);
     }
 
     animate(timeDelta, dataArray) {
-        let baseSpeed = 0.001;
-        let globalMoveSpeed = dataArray[20] * 0.0001;
-        this.stars.forEach((star, index) => {
-            let x = star.position.x;
-            let y = star.position.y; 
-            let z = star.position.z;
+        let baseSpeed = 0.000001;
+        let globalMoveSpeed = dataArray[20] * baseSpeed;
+        let moveSpeed = baseSpeed + (baseSpeed * dataArray[7] + globalMoveSpeed);
+        // this.stars.forEach((star, index) => {
+        //     let x = star.position.x;
+        //     let y = star.position.y; 
+        //     let z = star.position.z;
 
-            let moveSpeed = baseSpeed + (0.00001 * dataArray[7] + globalMoveSpeed);
 
-            star.position.set(x, y, z + moveSpeed * timeDelta);
+        //     star.position.set(x, y, z + moveSpeed * timeDelta);
 
-            if (star.position.z > 1) {
-                this.spawnStar(star);
-            }
-        });
+        //     if (star.position.z > 1) {
+        //         this.spawnStar(star);
+        //     }
+        // });
+        // this.starHolder.position.setZ(this.starHolder.position.z + moveSpeed * timeDelta);
+        this.starHolder.rotateX(-moveSpeed * timeDelta);
+        // this.starHolder.rotateOnWorldAxis(THREE.Vector3(1,0,0), moveSpeed * timeDelta);
+        // this.starHolder.updateMatrixWorld();
     }
 
     spawnStar(star) {
         let x = Utility.randomBetween(-50, 50);
         let y = Utility.randomBetween(-50, 50);
-        let z = Utility.randomBetween(-25, -50);
+        let z = Utility.randomBetween(-50, 50);
         star.position.set(x, y, z);
     }
 }

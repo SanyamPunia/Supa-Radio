@@ -1,3 +1,7 @@
+<svelte:head>
+	<title>Supa Radio 🎵</title>
+</svelte:head>
+
 <slot />
 
 <style lang="scss">

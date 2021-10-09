@@ -60,4 +60,10 @@ export default class AudioManager {
             progressBar.style.width = percent + '%';
         });
     }
+
+    addSongEndEvent(currentSongStatus) {
+        this.audio.addEventListener("ended", () => {
+            currentSongStatus.callback();
+        })
+    }
 }

@@ -15,6 +15,8 @@
 	let activeVisualizer = visualizers[0];
 	let progressBar;
 
+	let currentSongStatus = { callback: () => {nextSong()} };
+
 	onMount(async () => {
 		$loading = true;
 		let songUrl;
@@ -27,6 +29,7 @@
 		}
 		app.changeSound(songUrl);
 		app.addProgressEvent(progressBar);
+		app.addSongEndEvent(currentSongStatus);
 		$loading = false;
 	});
 
@@ -149,13 +152,13 @@
 				on:input={onVolumeChange}
 			/>
 		</div>
-		<!-- <div class="selectVisualizer"> -->
-			<!-- <select bind:value={activeVisualizer} on:change={changeVisualizer}> -->
-				<!-- {#each visualizers as visualizer} -->
-					<!-- <option>{visualizer}</option> -->
-				<!-- {/each} -->
-			<!-- </select> -->
-		<!-- </div> -->
+		<div class="selectVisualizer">
+			<select bind:value={activeVisualizer} on:change={changeVisualizer}>
+				{#each visualizers as visualizer}
+					<option>{visualizer}</option>
+				{/each}
+			</select>
+		</div>
 	</div>
 </div>
 
@@ -202,6 +205,7 @@
 				left: 0;
 				height: 2px;
 				width: 0;
+				margin: 0;
 			}
 		}
 

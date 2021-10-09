@@ -13,17 +13,16 @@ export default class App {
             STARS: 'stars',
             CUBES: 'cubes'
         }
-        this.setActiveVisualizer(this.visualizerType.STARS);
+        this.setActiveVisualizer(this.visualizerType.CUBES);
         this.audioManager = new AudioManager();
     }
 
     setActiveVisualizer(type) {
         this.clearScene();
         this.currentVisualizer = type;
-        switch(this.currentVisualizer)
-        {
+        switch (this.currentVisualizer) {
             case this.visualizerType.STARS:
-                this.visualizer = new StarManager(this.scene, 1000);
+                this.visualizer = new StarManager(this.scene, 2000);
                 break;
             case this.visualizerType.CUBES:
                 this.visualizer = new CubeVisualizer(this.scene);
@@ -36,7 +35,7 @@ export default class App {
             this.lastTimeStamp = timestamp;
             return;
         }
-        
+
         const width = window.innerWidth;
         const height = window.innerHeight;
         this.camera.aspect = width / height;
@@ -46,7 +45,7 @@ export default class App {
         const timeDelta = timestamp - this.lastTimeStamp;
 
         // animation enter here
-        if (this.songPlaying && this.visualizer!= null) {
+        if (this.songPlaying && this.visualizer != null) {
             let dataArray = this.audioManager.getFrequencyData();
             this.visualizer.animate(timeDelta, dataArray);
         }
@@ -66,16 +65,27 @@ export default class App {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.render(this.scene, this.camera);
         this.renderer.setAnimationLoop(this.animation.bind(this));
+        this.renderer.shadowMap.enabled = true;
         document.body.appendChild(this.renderer.domElement);
     }
 
     clearScene() {
-        while(this.scene.children.length > 0){ 
-            this.scene.remove(this.scene.children[0]); 
+        while (this.scene.children.length > 0) {
+            this.scene.remove(this.scene.children[0]);
         }
-        
-        const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-        this.scene.add(ambientLight);
+
+        // const light = new THREE.PointLight(0xffffff, 1, 100);
+        // light.position.set(0,5,-2.5);
+        // light.castShadow = true;
+        // this.scene.add(light);
+
+        // const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+        // ambientLight.castShadow = true;
+        // this.scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+        dirLight.position.set(0, 6, 10);
+        this.scene.add(dirLight);
     }
 
     playSound() {
@@ -107,13 +117,17 @@ export default class App {
     getSongDuration() {
         return this.audioManager.getSongDuration();
     }
-    
+
     getSongCurrentTime() {
         return this.audioManager.getSongCurrentTime();
     }
 
     addProgressEvent(progressBar) {
         this.audioManager.addProgressEvent(progressBar);
+    }
+
+    addSongEndEvent(currentSongStatus) {
+        this.audioManager.addSongEndEvent(currentSongStatus);
     }
 
 }
