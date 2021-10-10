@@ -1,6 +1,6 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { songIndex, playlist, loading } from '$lib/stores/stateStore';
+	import { songIndex, playlist, loading, formFocus } from '$lib/stores/stateStore';
 	import supabase from '$lib/supabase';
 	import { onMount } from 'svelte';
 
@@ -117,7 +117,7 @@
 	};
 
 	const handleSpacebar = (e) => {
-		if (e.keyCode == 32) {
+		if (e.keyCode == 32 && !$formFocus) {
 			if (isSongPlaying) pauseAudioClip();
 			else playAudioClip();
 		}

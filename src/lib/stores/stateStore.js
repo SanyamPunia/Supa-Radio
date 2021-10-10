@@ -6,6 +6,7 @@ export const userName = writable(null);
 export const playlist = writable([]);
 export const songIndex = writable(0);
 export const loading = writable(true);
+export const formFocus = writable(false);
 
 const setPlaylist = async () => {
     let tempPlaylist = [];

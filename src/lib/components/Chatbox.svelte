@@ -3,7 +3,7 @@
 	import { readable, get } from 'svelte/store';
 	import SignInPopup from './SignInPopup.svelte';
 	import { fade } from 'svelte/transition';
-	import { state, userName } from '$lib/stores/stateStore';
+	import { state, userName, formFocus } from '$lib/stores/stateStore';
 	import SignUpPopup from './SignUpPopup.svelte';
 	import CurrentProfile from '$lib/components/CurrentProfile.svelte';
 
@@ -80,6 +80,8 @@
 					<form on:submit|preventDefault={addChatInput}>
 						<div class="form-elements">
 							<input
+								on:focus={e=>{formFocus.set(true)}}
+								on:blur={e=>{formFocus.set(false)}}
 								required
 								placeholder="Enter Message..."
 								class="form-input"
