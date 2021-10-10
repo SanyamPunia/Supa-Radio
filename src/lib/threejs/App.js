@@ -13,7 +13,6 @@ export default class App {
             STARS: 'stars',
             CUBES: 'cubes'
         }
-        this.setActiveVisualizer(this.visualizerType.CUBES);
         this.audioManager = new AudioManager();
     }
 
@@ -79,12 +78,12 @@ export default class App {
         // light.castShadow = true;
         // this.scene.add(light);
 
-        // const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-        // ambientLight.castShadow = true;
-        // this.scene.add(ambientLight);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+        this.scene.add(ambientLight);
 
         const dirLight = new THREE.DirectionalLight(0xffffff, 1);
         dirLight.position.set(0, 6, 10);
+        dirLight.castShadow = true;
         this.scene.add(dirLight);
     }
 

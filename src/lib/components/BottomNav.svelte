@@ -15,7 +15,11 @@
 	let activeVisualizer = visualizers[0];
 	let progressBar;
 
-	let currentSongStatus = { callback: () => {nextSong()} };
+	let currentSongStatus = {
+		callback: () => {
+			nextSong();
+		}
+	};
 
 	onMount(async () => {
 		$loading = true;
@@ -30,6 +34,7 @@
 		app.changeSound(songUrl);
 		app.addProgressEvent(progressBar);
 		app.addSongEndEvent(currentSongStatus);
+		changeVisualizer();
 		$loading = false;
 	});
 
@@ -104,14 +109,22 @@
 	};
 
 	const changeVisualizer = () => {
-		console.log(activeVisualizer);
 		visualizers.forEach((element) => {
 			if (element == activeVisualizer) {
 				app.setActiveVisualizer(activeVisualizer);
 			}
 		});
 	};
+
+	const handleSpacebar = (e) => {
+		if (e.keyCode == 32) {
+			if (isSongPlaying) pauseAudioClip();
+			else playAudioClip();
+		}
+	};
 </script>
+
+<svelte:window on:keydown={handleSpacebar} />
 
 <div class="bottom-container">
 	<div class="bottom-items">
@@ -177,7 +190,7 @@
 		.bottom-items {
 			position: relative;
 			display: grid;
-			grid-template-columns: 1fr 1fr 1fr;
+			grid-template-columns: 3fr 3fr 2fr 1fr;
 			place-items: center;
 			width: 100%;
 			font-size: 1em;
@@ -194,10 +207,6 @@
 				}
 			}
 
-			.songControls {
-				justify-self: center;
-			}
-
 			.progressBar {
 				background: rgb(151, 236, 117);
 				position: absolute;
@@ -206,6 +215,27 @@
 				height: 2px;
 				width: 0;
 				margin: 0;
+			}
+
+			.selectVisualizer {
+				select {
+					background: none;
+					border: none;
+					font-family: 'Montserrat', sans-serif;
+					color: #fff;
+					padding: 0.3em;
+					border: 2px solid #5c7aea;
+					cursor: pointer;
+					border-radius: 4px;
+					font-size: 15px;
+					background: transparent;
+					transition: 0.2s all ease;
+					font-weight: bold;
+					text-transform: capitalize;
+					option {
+						color: black;
+					}
+				}
 			}
 		}
 

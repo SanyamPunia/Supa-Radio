@@ -27,6 +27,7 @@ export default class StarManager {
         this.scene.add(this.starHolder);
     }
 
+
     animate(timeDelta, dataArray) {
         let baseSpeed = 0.000001;
         let globalMoveSpeed = dataArray[20] * baseSpeed;
@@ -35,8 +36,6 @@ export default class StarManager {
         //     let x = star.position.x;
         //     let y = star.position.y; 
         //     let z = star.position.z;
-
-
         //     star.position.set(x, y, z + moveSpeed * timeDelta);
 
         //     if (star.position.z > 1) {
