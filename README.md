@@ -11,6 +11,8 @@
 
 A 3D Music visualizer built with supabase with Realtime chat functionality. Relax and Chill 🎵
 
+![Capture](https://user-images.githubusercontent.com/35108041/136731508-4fa7d47d-6c94-46f1-b5f6-7ba12d30d60d.PNG)
+
 ## 🔗 Link to the Project
 
 [Supa Radio](https://suparadio-viz.web.app/)
