@@ -16,6 +16,7 @@ A 3D Music visualizer built with supabase with Realtime chat functionality. Rela
 ## 🔗 Link to the Project
 
 [Supa Radio](https://suparadio-viz.web.app/)
+
 Featured on [madewithsupabase](https://www.madewithsupabase.com/p/supa-radio)
 
 ## 👨‍🌾 Contributors
